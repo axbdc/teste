@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -57,7 +56,7 @@
             height: 100vh;
             gap: 20px; 
             text-align: center;
-            z-index: 10; /* Garante que está acima do overlay (z-index: 1) */
+            z-index: 10; /* CORRIGIDO: Garante que está acima do overlay (z-index: 1) */
             position: relative; 
         }
 
@@ -65,7 +64,7 @@
             text-align: center;
             margin-bottom: 20px;
             z-index: 11; 
-            position: relative; /* Reforça a visibilidade */
+            position: relative; 
         }
 
         #logo {
@@ -114,14 +113,14 @@
             top: 0;
             left: 0;
             z-index: 5; 
-            background-color: white; /* Fundo branco para a visualização 3D */
+            background-color: white; 
             display: flex; 
             justify-content: center;
             align-items: center;
         }
         
         model-viewer {
-            width: 80%; /* Tamanho reduzido para visualização 3D (para mostrar o botão AR) */
+            width: 80%; 
             height: 80%;
             max-width: 800px; 
             max-height: 800px;
@@ -173,7 +172,7 @@
                 font-size: 1.8em; 
             }
             .menu-button {
-                min-width: 80vw; /* Ocupa mais largura em ecrãs pequenos */
+                min-width: 80vw; 
             }
             #logo {
                 max-width: 200px;
@@ -201,54 +200,48 @@
     
 
     <script>
-        // Envolve o script para garantir que o DOM está totalmente carregado
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const menuContainer = document.getElementById('menu-container');
-            const arStage = document.getElementById('ar-stage');
-            const backButton = document.getElementById('back-button');
+        // CORRIGIDO: O código foi colocado fora do 'DOMContentLoaded' e as funções foram definidas
+        // como variáveis globais (sem a palavra 'const' ou 'let') para garantir que o onclick as encontra.
+        const menuContainer = document.getElementById('menu-container');
+        const arStage = document.getElementById('ar-stage');
+        const backButton = document.getElementById('back-button');
 
-            // Função principal para carregar o modelo escolhido
-            function carregarModelo(nomeBase) {
-                menuContainer.style.display = 'none';
-                arStage.style.display = 'flex'; 
-                backButton.style.display = 'block'; 
+        // Função principal para carregar o modelo escolhido
+        function carregarModelo(nomeBase) {
+            menuContainer.style.display = 'none';
+            arStage.style.display = 'flex'; 
+            backButton.style.display = 'block'; 
 
-                arStage.innerHTML = `
-                    <model-viewer 
-                        id="my-model"
-                        src="./${nomeBase}.glb"
-                        ios-src="./${nomeBase}.usdz"
-                        alt="Modelo ${nomeBase} em Realidade Aumentada"
-                        ar
-                        ar-modes="webxr scene-viewer quick-look"
-                        camera-controls
-                        auto-rotate
-                        shadow-intensity="1"
-                        camera-orbit="0deg 90deg auto" 
-                        field-of-view="45deg" 
-                        exposure="1" 
-                    >
-                        <button slot="ar-button">
-                            Ver no Seu Espaço (AR)
-                        </button>
-                    </model-viewer>
-                `;
-            }
+            arStage.innerHTML = `
+                <model-viewer 
+                    id="my-model"
+                    src="./${nomeBase}.glb"
+                    ios-src="./${nomeBase}.usdz"
+                    alt="Modelo ${nomeBase} em Realidade Aumentada"
+                    ar
+                    ar-modes="webxr scene-viewer quick-look"
+                    camera-controls
+                    auto-rotate
+                    shadow-intensity="1"
+                    camera-orbit="0deg 90deg auto" 
+                    field-of-view="45deg" 
+                    exposure="1" 
+                >
+                    <button slot="ar-button">
+                        Ver no Seu Espaço (AR)
+                    </button>
+                </model-viewer>
+            `;
+        }
+        
+        // Função para voltar ao menu principal
+        function voltarAoMenu() {
+            arStage.style.display = 'none';
+            menuContainer.style.display = 'flex';
+            backButton.style.display = 'none'; 
 
-            // Torna as funções acessíveis globalmente (para os botões)
-            window.carregarModelo = carregarModelo;
-            
-            // Função para voltar ao menu principal
-            function voltarAoMenu() {
-                arStage.style.display = 'none';
-                menuContainer.style.display = 'flex';
-                backButton.style.display = 'none'; 
-
-                arStage.innerHTML = '';
-            }
-            
-            window.voltarAoMenu = voltarAoMenu;
-        });
+            arStage.innerHTML = '';
+        }
     </script>
 </body>
 </html>
