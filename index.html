@@ -22,7 +22,7 @@
             padding: 0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             
-            /* Imagem de Fundo */
+            /* Imagem de Fundo (Assumindo assets/background.jpg) */
             background-image: url('assets/background.jpg'); 
             background-size: cover; 
             background-position: center;
@@ -109,27 +109,30 @@
             top: 0;
             left: 0;
             z-index: 5; 
-            /* Adicionado: Fundo branco para contrastar com o modelo 3D */
             background-color: white; 
-            display: flex; /* Adicionado para centralizar o model-viewer */
+            display: flex; 
             justify-content: center;
             align-items: center;
         }
         
         model-viewer {
-            /* 3. Ocupa APENAS uma parte do ecrã para a visualização 3D */
             width: 80%;
             height: 80%;
-            /* 4. Garantir que o model-viewer é responsivo no PC e Telemóvel */
-            max-width: 800px; /* Limite máximo no PC */
+            max-width: 800px; 
             max-height: 800px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Sombra para destacá-lo */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
             border-radius: 10px;
         }
         
         /* Botão AR dentro do model-viewer (Cor rosa) */
         model-viewer > button[slot="ar-button"] {
             background-color: var(--primary-color) !important;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
         }
         model-viewer > button[slot="ar-button"]:hover {
             background-color: var(--primary-hover) !important;
@@ -157,13 +160,13 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
 
-        /* Ajustes para Telemóvel (se necessário, embora o Flexbox já ajude muito) */
+        /* Ajustes para Telemóvel */
         @media (max-width: 600px) {
             h1 {
-                font-size: 1.8em; /* Título um pouco menor */
+                font-size: 1.8em; 
             }
             .menu-button {
-                min-width: 80vw; /* Ocupa quase a largura toda do telemóvel */
+                min-width: 80vw; 
             }
             #logo {
                 max-width: 200px;
@@ -175,7 +178,7 @@
 
     <div id="menu-container">
         <div id="logo-container">
-            <img src="assets/logo.png" id="logo" alt="Logo YDigital Media">
+            <img src="ydlo.png" id="logo" alt="Logo YDigital Media">
         </div>
         
         <h1>Escolha o Objeto para Experienciar em Realidade Aumentada</h1>
@@ -199,7 +202,7 @@
         function carregarModelo(nomeBase) {
             // Esconde o menu e mostra o "stage" AR e o botão "Voltar"
             menuContainer.style.display = 'none';
-            arStage.style.display = 'flex'; // Mudado para 'flex' para centralizar
+            arStage.style.display = 'flex'; // Mudado para 'flex' para centralizar o modelo
             backButton.style.display = 'block'; 
 
             // Cria dinamicamente o elemento model-viewer
@@ -216,7 +219,7 @@
                     shadow-intensity="1"
                     camera-orbit="0deg 90deg auto" 
                     field-of-view="45deg" 
-                    exposure="1" /* 3. Adicionado: Ajusta a iluminação para ser mais clara */
+                    exposure="1" 
                 >
                     <button slot="ar-button">
                         Ver no Seu Espaço (AR)
@@ -227,7 +230,6 @@
         
         // Função para voltar ao menu principal
         function voltarAoMenu() {
-            // Esconde o "stage" AR e mostra o menu e esconde o botão "Voltar"
             arStage.style.display = 'none';
             menuContainer.style.display = 'flex';
             backButton.style.display = 'none'; 
