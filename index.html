@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu de Realidade Aumentada - Teste</title>
+    <title>Menu de Realidade Aumentada - YDigital Media</title>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
 
     <style>
+        /* A cor ROSA/MAGENTA do logotipo é aproximadamente: #FF0080 */
+        :root {
+            --primary-color: #FF0080; 
+            --primary-hover: #cc0066;
+        }
+
         /* -------------------------------------- */
         /* ESTILOS DE FUNDO E LAYOUT PROFISSIONAL */
         /* -------------------------------------- */
         body { 
             margin: 0; 
             padding: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte moderna */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             
-            /* 1. IMAGEM DE FUNDO (ATENÇÃO: SUBSTITUA ESTA URL) */
-            background-image: url('Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png'); 
+            /* Imagem de Fundo */
+            background-image: url('assets/background.jpg'); 
             background-size: cover; 
             background-position: center;
             background-attachment: fixed; 
@@ -26,7 +32,7 @@
             min-height: 100vh;
         }
 
-        /* Sobreposição (Overlay) Escura para Melhorar a Leitura do Texto Branco */
+        /* Sobreposição (Overlay) Escura */
         body::before {
             content: "";
             position: absolute;
@@ -34,17 +40,30 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Fundo preto semi-transparente (60% opacidade) */
             background-color: rgba(0, 0, 0, 0.6); 
             z-index: 1; 
         }
+
+        /* 1. Título e Logotipo */
+        #logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            z-index: 2;
+        }
+
+        #logo {
+            max-width: 250px; /* Tamanho razoável para o logo */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
         
-        /* Título do Menu */
         h1 {
-            color: white; /* Texto branco para o fundo escuro */
+            color: white; 
             margin-bottom: 30px;
-            font-weight: 300; /* Título mais leve e elegante */
+            font-weight: 300; 
             font-size: 2.5em;
+            z-index: 2;
         }
 
         /* Container Principal do Menu */
@@ -54,19 +73,19 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            gap: 20px; /* Espaço entre botões */
+            gap: 20px; 
             text-align: center;
-            z-index: 2; /* Fica acima do overlay */
+            z-index: 2; 
             position: relative; 
         }
 
-        /* Estilo dos Botões */
+        /* 2. Estilo dos Botões (Cor Rosa/Magenta) */
         .menu-button {
             padding: 15px 30px;
-            background-color: #007bff; /* Azul primário (cor profissional) */
+            background-color: var(--primary-color); /* Rosa do Logo */
             color: white;
             border: none;
-            border-radius: 30px; /* Botões arredondados */
+            border-radius: 30px; 
             cursor: pointer;
             font-size: 18px;
             transition: all 0.3s ease; 
@@ -76,15 +95,12 @@
         }
 
         .menu-button:hover {
-            background-color: #0056b3; /* Tom mais escuro no hover */
-            transform: translateY(-2px); /* Efeito de "levantar" */
+            background-color: var(--primary-hover); /* Tom mais escuro no hover */
+            transform: translateY(-2px); 
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-        /* -------------------------------------- */
-        /* FIM DOS ESTILOS PROFISSIONAIS */
-        /* -------------------------------------- */
         
-        /* Palco (Stage) de Realidade Aumentada */
+        /* 3. Palco (Stage) de Realidade Aumentada - AJUSTADO */
         #ar-stage {
             display: none;
             width: 100vw;
@@ -93,19 +109,39 @@
             top: 0;
             left: 0;
             z-index: 5; 
-        }
-        model-viewer {
-            width: 100%;
-            height: 100%;
+            /* Adicionado: Fundo branco para contrastar com o modelo 3D */
+            background-color: white; 
+            display: flex; /* Adicionado para centralizar o model-viewer */
+            justify-content: center;
+            align-items: center;
         }
         
+        model-viewer {
+            /* 3. Ocupa APENAS uma parte do ecrã para a visualização 3D */
+            width: 80%;
+            height: 80%;
+            /* 4. Garantir que o model-viewer é responsivo no PC e Telemóvel */
+            max-width: 800px; /* Limite máximo no PC */
+            max-height: 800px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Sombra para destacá-lo */
+            border-radius: 10px;
+        }
+        
+        /* Botão AR dentro do model-viewer (Cor rosa) */
+        model-viewer > button[slot="ar-button"] {
+            background-color: var(--primary-color) !important;
+        }
+        model-viewer > button[slot="ar-button"]:hover {
+            background-color: var(--primary-hover) !important;
+        }
+
         /* Botão para Voltar ao Menu */
         #back-button {
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 1000;
-            background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+            background-color: rgba(0, 0, 0, 0.5); 
             color: white;
             border: none;
             padding: 10px 15px;
@@ -120,11 +156,28 @@
         #back-button:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
+
+        /* Ajustes para Telemóvel (se necessário, embora o Flexbox já ajude muito) */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em; /* Título um pouco menor */
+            }
+            .menu-button {
+                min-width: 80vw; /* Ocupa quase a largura toda do telemóvel */
+            }
+            #logo {
+                max-width: 200px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="menu-container">
+        <div id="logo-container">
+            <img src="assets/logo.png" id="logo" alt="Logo YDigital Media">
+        </div>
+        
         <h1>Escolha o Objeto para Experienciar em Realidade Aumentada</h1>
         <button class="menu-button" onclick="carregarModelo('stitch_ar')">1. Ver Stitch</button>
         <button class="menu-button" onclick="carregarModelo('model2')">2. Ver Modelo 2</button>
@@ -146,7 +199,7 @@
         function carregarModelo(nomeBase) {
             // Esconde o menu e mostra o "stage" AR e o botão "Voltar"
             menuContainer.style.display = 'none';
-            arStage.style.display = 'block';
+            arStage.style.display = 'flex'; // Mudado para 'flex' para centralizar
             backButton.style.display = 'block'; 
 
             // Cria dinamicamente o elemento model-viewer
@@ -163,8 +216,9 @@
                     shadow-intensity="1"
                     camera-orbit="0deg 90deg auto" 
                     field-of-view="45deg" 
+                    exposure="1" /* 3. Adicionado: Ajusta a iluminação para ser mais clara */
                 >
-                    <button slot="ar-button" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                    <button slot="ar-button">
                         Ver no Seu Espaço (AR)
                     </button>
                 </model-viewer>
