@@ -15,14 +15,14 @@
         }
 
         /* -------------------------------------- */
-        /* ESTILOS GERAIS, FUNDO E OVERLAY (CORRIGIDO) */
+        /* ESTILOS GERAIS, FUNDO E OVERLAY */
         /* -------------------------------------- */
         body { 
             margin: 0; 
             padding: 0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             
-            /* Imagem de Fundo (Caminho corrigido) */
+            /* Imagem de Fundo */
             background-image: url('Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png'); 
             background-size: cover; 
             background-position: center;
@@ -32,7 +32,7 @@
             min-height: 100vh;
         }
 
-        /* Sobreposição Escura (Overlay) - CORRIGIDO: Agora uma div separada para garantir ordem de carregamento */
+        /* Sobreposição Escura (Overlay) */
         #background-overlay {
             position: absolute;
             top: 0;
@@ -44,7 +44,7 @@
         }
 
         /* -------------------------------------- */
-        /* MENU E CONTEÚDO (Z-INDEX SUPERIOR) */
+        /* MENU E CONTEÚDO */
         /* -------------------------------------- */
 
         #menu-container {
@@ -201,10 +201,24 @@
     
 
     <script>
-        // Os objetos HTML são buscados imediatamente.
         const menuContainer = document.getElementById('menu-container');
         const arStage = document.getElementById('ar-stage');
         const backButton = document.getElementById('back-button');
+
+        // NOVO: Força o browser a repintar o fundo assim que a página e a imagem estão carregadas.
+        window.addEventListener('load', function() {
+            // Pequena alteração de estilo que força a repintura (re-render)
+            document.body.style.transform = 'translateZ(0)';
+            // Também podemos tentar forçar uma pequena mudança no overlay
+            const overlay = document.getElementById('background-overlay');
+            if (overlay) {
+                overlay.style.opacity = '0.99'; 
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                }, 10);
+            }
+        });
+
 
         // Função principal para carregar o modelo escolhido
         function carregarModelo(nomeBase) {
