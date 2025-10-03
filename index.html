@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -8,14 +9,14 @@
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
 
     <style>
-        /* A cor ROSA/MAGENTA do logotipo é aproximadamente: #FF0080 */
+        /* Variáveis de Cor (Rosa/Magenta) */
         :root {
             --primary-color: #FF0080; 
             --primary-hover: #cc0066;
         }
 
         /* -------------------------------------- */
-        /* ESTILOS DE FUNDO E LAYOUT PROFISSIONAL */
+        /* ESTILOS GERAIS, FUNDO E OVERLAY */
         /* -------------------------------------- */
         body { 
             margin: 0; 
@@ -23,7 +24,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             
             /* Imagem de Fundo (Assumindo assets/background.jpg) */
-            background-image: url('background.jpg'); 
+            background-image: url('Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png'); 
             background-size: cover; 
             background-position: center;
             background-attachment: fixed; 
@@ -32,7 +33,7 @@
             min-height: 100vh;
         }
 
-        /* Sobreposição (Overlay) Escura */
+        /* Sobreposição Escura (Overlay) */
         body::before {
             content: "";
             position: absolute;
@@ -44,15 +45,31 @@
             z-index: 1; 
         }
 
-        /* 1. Título e Logotipo */
+        /* -------------------------------------- */
+        /* MENU E CONTEÚDO (Z-INDEX SUPERIOR) */
+        /* -------------------------------------- */
+
+        #menu-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            gap: 20px; 
+            text-align: center;
+            z-index: 10; /* Garante que está acima do overlay (z-index: 1) */
+            position: relative; 
+        }
+
         #logo-container {
             text-align: center;
             margin-bottom: 20px;
-            z-index: 2;
+            z-index: 11; 
+            position: relative; /* Reforça a visibilidade */
         }
 
         #logo {
-            max-width: 250px; /* Tamanho razoável para o logo */
+            max-width: 250px; 
             height: auto;
             display: block;
             margin: 0 auto;
@@ -63,26 +80,12 @@
             margin-bottom: 30px;
             font-weight: 300; 
             font-size: 2.5em;
-            z-index: 2;
         }
 
-        /* Container Principal do Menu */
-        #menu-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            gap: 20px; 
-            text-align: center;
-            z-index: 2; 
-            position: relative; 
-        }
-
-        /* 2. Estilo dos Botões (Cor Rosa/Magenta) */
+        /* Estilo dos Botões (Rosa/Magenta) */
         .menu-button {
             padding: 15px 30px;
-            background-color: var(--primary-color); /* Rosa do Logo */
+            background-color: var(--primary-color); 
             color: white;
             border: none;
             border-radius: 30px; 
@@ -95,12 +98,14 @@
         }
 
         .menu-button:hover {
-            background-color: var(--primary-hover); /* Tom mais escuro no hover */
+            background-color: var(--primary-hover); 
             transform: translateY(-2px); 
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
         
-        /* 3. Palco (Stage) de Realidade Aumentada - AJUSTADO */
+        /* -------------------------------------- */
+        /* AR STAGE (Visualização 3D) */
+        /* -------------------------------------- */
         #ar-stage {
             display: none;
             width: 100vw;
@@ -109,14 +114,14 @@
             top: 0;
             left: 0;
             z-index: 5; 
-            background-color: white; 
+            background-color: white; /* Fundo branco para a visualização 3D */
             display: flex; 
             justify-content: center;
             align-items: center;
         }
         
         model-viewer {
-            width: 80%;
+            width: 80%; /* Tamanho reduzido para visualização 3D (para mostrar o botão AR) */
             height: 80%;
             max-width: 800px; 
             max-height: 800px;
@@ -124,7 +129,7 @@
             border-radius: 10px;
         }
         
-        /* Botão AR dentro do model-viewer (Cor rosa) */
+        /* Botão AR dentro do model-viewer (Rosa/Magenta) */
         model-viewer > button[slot="ar-button"] {
             background-color: var(--primary-color) !important;
             color: white;
@@ -160,13 +165,15 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
 
-        /* Ajustes para Telemóvel */
+        /* -------------------------------------- */
+        /* RESPONSIVIDADE (Telemóveis) */
+        /* -------------------------------------- */
         @media (max-width: 600px) {
             h1 {
                 font-size: 1.8em; 
             }
             .menu-button {
-                min-width: 80vw; 
+                min-width: 80vw; /* Ocupa mais largura em ecrãs pequenos */
             }
             #logo {
                 max-width: 200px;
@@ -194,50 +201,54 @@
     
 
     <script>
-        const menuContainer = document.getElementById('menu-container');
-        const arStage = document.getElementById('ar-stage');
-        const backButton = document.getElementById('back-button');
+        // Envolve o script para garantir que o DOM está totalmente carregado
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const menuContainer = document.getElementById('menu-container');
+            const arStage = document.getElementById('ar-stage');
+            const backButton = document.getElementById('back-button');
 
-        // Função principal para carregar o modelo escolhido
-        function carregarModelo(nomeBase) {
-            // Esconde o menu e mostra o "stage" AR e o botão "Voltar"
-            menuContainer.style.display = 'none';
-            arStage.style.display = 'flex'; // Mudado para 'flex' para centralizar o modelo
-            backButton.style.display = 'block'; 
+            // Função principal para carregar o modelo escolhido
+            function carregarModelo(nomeBase) {
+                menuContainer.style.display = 'none';
+                arStage.style.display = 'flex'; 
+                backButton.style.display = 'block'; 
 
-            // Cria dinamicamente o elemento model-viewer
-            arStage.innerHTML = `
-                <model-viewer 
-                    id="my-model"
-                    src="./${nomeBase}.glb"
-                    ios-src="./${nomeBase}.usdz"
-                    alt="Modelo ${nomeBase} em Realidade Aumentada"
-                    ar
-                    ar-modes="webxr scene-viewer quick-look"
-                    camera-controls
-                    auto-rotate
-                    shadow-intensity="1"
-                    camera-orbit="0deg 90deg auto" 
-                    field-of-view="45deg" 
-                    exposure="1" 
-                >
-                    <button slot="ar-button">
-                        Ver no Seu Espaço (AR)
-                    </button>
-                </model-viewer>
-            `;
-        }
-        
-        // Função para voltar ao menu principal
-        function voltarAoMenu() {
-            arStage.style.display = 'none';
-            menuContainer.style.display = 'flex';
-            backButton.style.display = 'none'; 
+                arStage.innerHTML = `
+                    <model-viewer 
+                        id="my-model"
+                        src="./${nomeBase}.glb"
+                        ios-src="./${nomeBase}.usdz"
+                        alt="Modelo ${nomeBase} em Realidade Aumentada"
+                        ar
+                        ar-modes="webxr scene-viewer quick-look"
+                        camera-controls
+                        auto-rotate
+                        shadow-intensity="1"
+                        camera-orbit="0deg 90deg auto" 
+                        field-of-view="45deg" 
+                        exposure="1" 
+                    >
+                        <button slot="ar-button">
+                            Ver no Seu Espaço (AR)
+                        </button>
+                    </model-viewer>
+                `;
+            }
 
-            // Limpa o model-viewer para descarregar o modelo
-            arStage.innerHTML = '';
-        }
-        
+            // Torna as funções acessíveis globalmente (para os botões)
+            window.carregarModelo = carregarModelo;
+            
+            // Função para voltar ao menu principal
+            function voltarAoMenu() {
+                arStage.style.display = 'none';
+                menuContainer.style.display = 'flex';
+                backButton.style.display = 'none'; 
+
+                arStage.innerHTML = '';
+            }
+            
+            window.voltarAoMenu = voltarAoMenu;
+        });
     </script>
 </body>
 </html>
