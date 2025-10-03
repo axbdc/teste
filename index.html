@@ -22,7 +22,7 @@
             padding: 0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             
-            /* Imagem de Fundo (Assumindo assets/background.jpg) */
+            /* Imagem de Fundo (Caminho corrigido) */
             background-image: url('Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png'); 
             background-size: cover; 
             background-position: center;
@@ -49,22 +49,23 @@
         /* -------------------------------------- */
 
         #menu-container {
-            display: flex;
+            /* MANTIDO COMO FLEX para centralizar, mas é carregado imediatamente. */
+            display: flex; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             gap: 20px; 
             text-align: center;
-            z-index: 10; /* CORRIGIDO: Garante que está acima do overlay (z-index: 1) */
-            position: relative; 
+            z-index: 10; 
+            position: relative; /* CRUCIAL para o Z-INDEX funcionar */
         }
 
         #logo-container {
             text-align: center;
             margin-bottom: 20px;
             z-index: 11; 
-            position: relative; 
+            position: relative;
         }
 
         #logo {
@@ -200,8 +201,7 @@
     
 
     <script>
-        // CORRIGIDO: O código foi colocado fora do 'DOMContentLoaded' e as funções foram definidas
-        // como variáveis globais (sem a palavra 'const' ou 'let') para garantir que o onclick as encontra.
+        // Os objetos HTML são buscados imediatamente.
         const menuContainer = document.getElementById('menu-container');
         const arStage = document.getElementById('ar-stage');
         const backButton = document.getElementById('back-button');
