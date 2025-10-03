@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu de Realidade Aumentada - YDigital Media</title>
 
+    <link rel="preload" href="Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png" as="image">
+
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
 
     <style>
@@ -15,7 +17,7 @@
         }
 
         /* -------------------------------------- */
-        /* ESTILOS GERAIS, FUNDO E OVERLAY */
+        /* ESTILOS GERAIS, FUNDO E OVERLAY (CORRIGIDO) */
         /* -------------------------------------- */
         body { 
             margin: 0; 
@@ -26,7 +28,8 @@
             background-image: url('Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png'); 
             background-size: cover; 
             background-position: center;
-            background-attachment: fixed; 
+            /* CORREÇÃO CRUCIAL: 'fixed' REMOVIDO para evitar falha de renderização inicial */
+            /* background-attachment: fixed; <-- Removido */
             
             position: relative;
             min-height: 100vh;
@@ -204,21 +207,6 @@
         const menuContainer = document.getElementById('menu-container');
         const arStage = document.getElementById('ar-stage');
         const backButton = document.getElementById('back-button');
-
-        // NOVO: Força o browser a repintar o fundo assim que a página e a imagem estão carregadas.
-        window.addEventListener('load', function() {
-            // Pequena alteração de estilo que força a repintura (re-render)
-            document.body.style.transform = 'translateZ(0)';
-            // Também podemos tentar forçar uma pequena mudança no overlay
-            const overlay = document.getElementById('background-overlay');
-            if (overlay) {
-                overlay.style.opacity = '0.99'; 
-                setTimeout(() => {
-                    overlay.style.opacity = '1';
-                }, 10);
-            }
-        });
-
 
         // Função principal para carregar o modelo escolhido
         function carregarModelo(nomeBase) {
