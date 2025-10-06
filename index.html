@@ -122,4 +122,136 @@
             left: 0;
             z-index: 5; 
             background-color: white; 
-            display: flex;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+        
+        model-viewer {
+            width: 80%; 
+            height: 80%;
+            max-width: 800px; 
+            max-height: 800px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
+            border-radius: 10px;
+        }
+        
+        /* Botão AR dentro do model-viewer (Rosa/Magenta) */
+        model-viewer > button[slot="ar-button"] {
+            background-color: var(--primary-color) !important;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        model-viewer > button[slot="ar-button"]:hover {
+            background-color: var(--primary-hover) !important;
+        }
+
+        /* Botão para Voltar ao Menu */
+        #back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.5); 
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        #back-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* -------------------------------------- */
+        /* RESPONSIVIDADE (Telemóveis) */
+        /* -------------------------------------- */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em; 
+            }
+            .menu-button {
+                min-width: 80vw; 
+            }
+            #logo {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="Gemini_Generated_Image_dl4f9hdl4f9hdl4f.png" id="fixed-background" alt="Fundo do Site">
+
+    <div id="background-overlay"></div>
+
+    <div id="menu-container">
+        <div id="logo-container">
+            <img src="ydlo.png" id="logo" alt="Logo YDigital Media">
+        </div>
+        
+        <h1>Escolha o Objeto para Experienciar em Realidade Aumentada</h1>
+        <button class="menu-button" onclick="carregarModelo('stitch_ar')">1. Ver Stitch</button>
+        <button class="menu-button" onclick="carregarModelo('model2')">2. Ver Modelo 2</button>
+        <button class="menu-button" onclick="carregarModelo('model3')">3. Ver Modelo 3</button>
+    </div>
+
+    <div id="ar-stage">
+    </div>
+    
+    <button id="back-button" style="display: none;" onclick="voltarAoMenu()">← Voltar</button>
+    
+
+    <script>
+        const menuContainer = document.getElementById('menu-container');
+        const arStage = document.getElementById('ar-stage');
+        const backButton = document.getElementById('back-button');
+
+        // Função principal para carregar o modelo escolhido
+        function carregarModelo(nomeBase) {
+            menuContainer.style.display = 'none';
+            arStage.style.display = 'flex'; 
+            backButton.style.display = 'block'; 
+
+            arStage.innerHTML = `
+                <model-viewer 
+                    id="my-model"
+                    src="./${nomeBase}.glb"
+                    ios-src="./${nomeBase}.usdz"
+                    alt="Modelo ${nomeBase} em Realidade Aumentada"
+                    ar
+                    ar-modes="webxr scene-viewer quick-look"
+                    camera-controls
+                    auto-rotate
+                    shadow-intensity="1"
+                    camera-orbit="0deg 90deg auto" 
+                    field-of-view="45deg" 
+                    exposure="1" 
+                >
+                    <button slot="ar-button">
+                        Ver no Seu Espaço (AR)
+                    </button>
+                </model-viewer>
+            `;
+        }
+        
+        // Função para voltar ao menu principal
+        function voltarAoMenu() {
+            arStage.style.display = 'none';
+            menuContainer.style.display = 'flex';
+            backButton.style.display = 'none'; 
+
+            arStage.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
