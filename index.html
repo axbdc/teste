@@ -23,33 +23,33 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             position: relative;
             min-height: 100vh;
-            /* CRUCIAL: O background-image foi REMOVIDO daqui */
         }
         
-        /* A NOVA IMAGEM DE FUNDO (position: fixed) */
+        /* A IMAGEM DE FUNDO (position: fixed) */
         #fixed-background {
-            position: fixed; /* Ocupa todo o ecrã e não se move ao fazer scroll */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Garante que a imagem cobre todo o espaço (como background-size: cover) */
-            z-index: -10; /* Vai para muito fundo para não interferir com nada */
+            object-fit: cover; 
+            z-index: -10; /* No fundo de tudo */
         }
 
-        /* Sobreposição Escura (Overlay) */
+        /* Sobreposição Escura (Overlay) - CORRIGIDO */
         #background-overlay {
-            position: absolute;
+            /* MUDANÇA CRUCIAL: 'fixed' garante que ocupa 100% do ecrã, independentemente do conteúdo do body */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100%; /* Agora ocupa 100% da viewport */
             background-color: rgba(0, 0, 0, 0.6); 
             z-index: 1; 
         }
 
         /* -------------------------------------- */
-        /* MENU E CONTEÚDO */
+        /* MENU E CONTEÚDO (DEVE FICAR ACIMA DO OVERLAY) */
         /* -------------------------------------- */
 
         #menu-container {
@@ -61,7 +61,7 @@
             gap: 20px; 
             text-align: center;
             z-index: 10; 
-            position: relative; 
+            position: relative; /* Necessário para garantir que está acima do overlay (z-index: 1) */
         }
 
         #logo-container {
@@ -251,4 +251,3 @@
     </script>
 </body>
 </html>
-```
