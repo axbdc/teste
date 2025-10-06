@@ -17,17 +17,13 @@
         /* -------------------------------------- */
         /* ESTILOS GERAIS, FUNDO E OVERLAY */
         /* -------------------------------------- */
-        html, body { /* ADICIONADO: Garante que HTML e Body ocupam 100% da viewport */
-            height: 100%; /* ALTERADO DE 100vh para 100% porque o html já tem 100vh, para evitar scrollbar dupla nalguns browsers */
+        html, body { 
+            height: 100vh; /* Garante que HTML e Body ocupam 100% da viewport */
             margin: 0; 
             padding: 0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            position: relative;
-            /* REMOVIDO: min-height: 100vh; já que height: 100% no body e html já faz o efeito desejado */
-        }
-        html {
-            height: 100vh; /* O HTML deve ter a altura da viewport */
-            overflow: hidden; /* Evita scrolls indesejados no elemento raiz */
+            position: relative; /* Pode ser útil para contextos de empilhamento */
+            overflow: hidden; /* Evita scrollbars em excesso */
         }
         
         /* A IMAGEM DE FUNDO (position: fixed) */
@@ -41,7 +37,7 @@
             z-index: -10; /* No fundo de tudo */
         }
 
-        /* Sobreposição Escura (Overlay) - CORRIGIDO */
+        /* Sobreposição Escura (Overlay) */
         #background-overlay {
             position: fixed; 
             top: 0;
@@ -49,7 +45,7 @@
             width: 100%;
             height: 100%; 
             background-color: rgba(0, 0, 0, 0.6); 
-            z-index: 1; 
+            z-index: -5; /* Acima do fundo, mas abaixo do conteúdo principal */
         }
 
         /* -------------------------------------- */
@@ -57,15 +53,16 @@
         /* -------------------------------------- */
 
         #menu-container {
-            display: flex; 
+            display: flex; /* Mantém o display flex para o layout interno */
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Continua a ser 100vh para centralizar o conteúdo */
+            height: 100vh; 
             gap: 20px; 
             text-align: center;
             z-index: 10; 
             position: relative; 
+            /* Não usamos visibility: hidden aqui, pois queremos que seja visível inicialmente */
         }
 
         #logo-container {
@@ -114,17 +111,26 @@
         /* AR STAGE (Visualização 3D) */
         /* -------------------------------------- */
         #ar-stage {
-            display: none;
+            /* Alterado de display: none para visibility: hidden; para manter no fluxo */
+            visibility: hidden; 
+            opacity: 0; /* Adicionado para uma transição mais suave, se necessário */
+            transition: visibility 0s, opacity 0.3s ease-in-out; /* Transição */
             width: 100vw;
             height: 100vh;
-            position: absolute;
+            position: absolute; /* Mantido para sobrepor o menu */
             top: 0;
             left: 0;
-            z-index: 5; 
-            background-color: white; 
-            display: flex; 
+            z-index: 100; /* Z-index alto para garantir que está acima de tudo */
+            background-color: white; /* Cor de fundo para quando estiver visível */
+            display: flex; /* Mantido para centralizar o model-viewer */
             justify-content: center;
             align-items: center;
+        }
+
+        /* Classe para mostrar o AR Stage */
+        #ar-stage.visible {
+            visibility: visible;
+            opacity: 1;
         }
         
         model-viewer {
@@ -155,7 +161,7 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 1000;
+            z-index: 1000; /* Super alto para estar sempre visível */
             background-color: rgba(0, 0, 0, 0.5); 
             color: white;
             border: none;
@@ -215,12 +221,23 @@
         const menuContainer = document.getElementById('menu-container');
         const arStage = document.getElementById('ar-stage');
         const backButton = document.getElementById('back-button');
+        const fixedBackground = document.getElementById('fixed-background');
+
+        // Opcional: listener para garantir que a imagem de fundo está carregada
+        fixedBackground.onload = () => {
+            console.log('Imagem de fundo carregada.');
+            // Aqui podes adicionar alguma lógica extra se precisares,
+            // mas normalmente o CSS já deveria estar a funcionar.
+        };
+        fixedBackground.onerror = () => {
+            console.error('Erro ao carregar a imagem de fundo.');
+        };
+
 
         // Função principal para carregar o modelo escolhido
         function carregarModelo(nomeBase) {
-            menuContainer.style.display = 'none';
-            arStage.style.display = 'flex'; 
-            backButton.style.display = 'block'; 
+            menuContainer.style.visibility = 'hidden'; // Esconde o menu
+            menuContainer.style.opacity = '0'; // Transição suave para o menu (opcional)
 
             arStage.innerHTML = `
                 <model-viewer 
@@ -242,15 +259,24 @@
                     </button>
                 </model-viewer>
             `;
+            // Usa setTimeout para garantir que o DOM foi atualizado antes de tornar visível
+            setTimeout(() => {
+                arStage.classList.add('visible'); // Mostra o AR Stage usando a classe
+                backButton.style.display = 'block'; 
+            }, 10); // Pequeno atraso
         }
         
         // Função para voltar ao menu principal
         function voltarAoMenu() {
-            arStage.style.display = 'none';
-            menuContainer.style.display = 'flex';
+            arStage.classList.remove('visible'); // Esconde o AR Stage
+            arStage.innerHTML = ''; // Limpa o conteúdo do AR Stage
             backButton.style.display = 'none'; 
 
-            arStage.innerHTML = '';
+            // Usa setTimeout para garantir que o AR Stage está escondido antes de mostrar o menu
+            setTimeout(() => {
+                menuContainer.style.visibility = 'visible'; // Mostra o menu
+                menuContainer.style.opacity = '1'; // Transição suave para o menu (opcional)
+            }, 300); // Espera um pouco mais do que a transição do AR Stage (0.3s)
         }
     </script>
 </body>
